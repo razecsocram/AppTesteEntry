@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="AppTesteEntry.MainPage">
+
+    <StackLayout 
+           HorizontalOptions="Center"
+           VerticalOptions="CenterAndExpand">
+        <!-- Place new controls here -->
+        <Label Text="Teste retorno do teclado." />
+        <Entry x:Name="TxtData" Placeholder="Digite Data" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtCnpj" Placeholder="Digite CNPJ" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtCpf" Placeholder="Digite CPF" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtTel" Placeholder="Digite Telefone" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtInteiroSemMilhar" Placeholder="Inteiro sem milhar" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtInteiroComMilhar" Placeholder="Inteiro com milhar" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtDecSemMilar" Placeholder="Decimal sem milhar" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtDecComMilar" Placeholder="Decimal com milhar" WidthRequest="200" Keyboard="Numeric"/>
+        <Entry x:Name="TxtFree" Placeholder="Digite algo" WidthRequest="200" Keyboard="Numeric"/>
+    </StackLayout>
+
+</ContentPage>
