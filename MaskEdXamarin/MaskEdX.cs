@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MaskEdXamarin
@@ -9,56 +7,69 @@ namespace MaskEdXamarin
     public class MaskEdX
     {
         #region Ctor
-        public MaskEdX(Entry entry, 
-                        string mascaraedicao, 
-                        byte numerocasasdecimais, 
+        public MaskEdX(Entry entry,
+                        TextAlignment alignment)
+        {
+            this.nomeEntry = entry;
+            nomeEntry.Keyboard = Keyboard.Numeric;
+            this.alignment = alignment;
+            this.nomeEntry.HorizontalTextAlignment = alignment;
+        }
+
+        public MaskEdX(Entry entry,
                         byte tamanho,
                         TextAlignment alignment)
         {
             this.nomeEntry = entry;
-            nomeEntry.Text = "";
+            nomeEntry.Keyboard = Keyboard.Numeric;
+            this.tamanho = tamanho;
+            this.alignment = alignment;
+            this.nomeEntry.HorizontalTextAlignment = alignment;
+        }
+
+        public MaskEdX(Entry entry,
+                        string mascaraedicao,
+                        byte tamanho,
+                        TextAlignment alignment)
+        {
+            this.nomeEntry = entry;
+            nomeEntry.Keyboard = Keyboard.Numeric;
+            this.mascaraEdicao = mascaraedicao;
+            this.tamanho = tamanho;
+            this.alignment = alignment;
+            this.nomeEntry.HorizontalTextAlignment = alignment;
+        }
+
+        public MaskEdX(Entry entry,
+                        byte numerocasasdecimais,
+                        byte tamanho,
+                        TextAlignment alignment)
+        {
+            this.nomeEntry = entry;
+            nomeEntry.Keyboard = Keyboard.Numeric;
+            this.numeroCasasDecimais = numerocasasdecimais;
+            this.tamanho = tamanho;
+            this.alignment = alignment;
+            this.nomeEntry.HorizontalTextAlignment = alignment;
+        }
+
+        public MaskEdX(Entry entry,
+                        string mascaraedicao,
+                        byte numerocasasdecimais,
+                        byte tamanho,
+                        TextAlignment alignment)
+        {
+            this.nomeEntry = entry;
+            nomeEntry.Keyboard = Keyboard.Numeric;
             this.mascaraEdicao = mascaraedicao;
             this.numeroCasasDecimais = numerocasasdecimais;
             this.tamanho = tamanho;
             this.alignment = alignment;
             this.nomeEntry.HorizontalTextAlignment = alignment;
-
-            Pattern = new List<string>
-            {
-                "/",
-                "-",
-                "+",
-                ".",
-                "(",
-                ")",
-                ":",
-                ";",
-                "!",
-                "@",
-                "#",
-                "$",
-                "%",
-                "¨",
-                "&",
-                "*",
-                "`",
-                "´",
-                "^",
-                "~",
-                "=",
-                "?",
-                "|",
-                "{",
-                "}",
-                "[",
-                "]",
-                ","
-            };
         }
         #endregion
 
-        #region Properties
-
+        #region Propriedades
         private readonly Entry nomeEntry;
 
         private readonly string mascaraEdicao;
@@ -68,9 +79,6 @@ namespace MaskEdXamarin
         private readonly byte tamanho;
 
         private readonly TextAlignment alignment;
-
-        private List<string> Pattern { get; set; }
-
         #endregion
 
         #region Metodos
@@ -132,6 +140,35 @@ namespace MaskEdXamarin
             }
         }
 
+        public void MaskIE(string bufferDigitado, ref bool ischanged)
+        {
+            try
+            {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
+                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
+                {
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= 12)
+                    {
+                        nomeEntry.Text = string.Format(@"{0:000\.000\.000\.000}", Convert.ToInt64(bufferDigitado));
+                    }
+                    else
+                    {
+                        nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
+                    }
+                    ischanged = true;
+                }
+                else
+                {
+                    ischanged = false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void MaskDate(string bufferDigitado, ref bool ischanged)
         {
             try
@@ -162,40 +199,6 @@ namespace MaskEdXamarin
             }
         }
 
-        public void MaskInteiroSemMilhar(string bufferDigitado, ref bool ischanged)
-        {
-            try
-            {
-                bufferDigitado = LimpaPattern(bufferDigitado);
-
-                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
-                {
-                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
-                    {
-                        nomeEntry.Text = string.Format("{0:0}", Convert.ToInt64(bufferDigitado));
-                    }
-                    else
-                    {
-                        nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
-                    }
-
-                    ischanged = true;
-                }
-                else
-                {
-
-                    //if (bufferDigitado.Length>0)
-                    //    nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
-
-                    ischanged = false;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         public void MaskInteiroComMilhar(string bufferDigitado, ref bool ischanged)
         {
             try
@@ -214,13 +217,11 @@ namespace MaskEdXamarin
                         nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
                     }
 
-                    ischanged = true;
+                    if(bufferDigitado.Length>3)
+                        ischanged = true;
                 }
                 else
                 {
-
-                    //if (bufferDigitado.Length>0)
-                    //    nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
 
                     ischanged = false;
                 }
@@ -376,7 +377,7 @@ namespace MaskEdXamarin
             }
         }
 
-        public async Task<string> ClipText(string mascara)
+        public string ClipText(string mascara)
         {
             return LimpaPattern(mascara);
         }
