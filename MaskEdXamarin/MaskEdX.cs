@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 using Xamarin.Forms;
 
 namespace MaskEdXamarin
@@ -79,11 +78,13 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace(".", "").Replace("-", "")).ToString().Length <= 11)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= 11)
                     {
-                        nomeEntry.Text = string.Format(@"{0:000\.000\.000\-00}", Convert.ToInt64(bufferDigitado.Replace(".", "").Replace("-", "")));
+                        nomeEntry.Text = string.Format(@"{0:000\.000\.000\-00}", Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -106,11 +107,13 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace(".", "").Replace("/", "").Replace("-", "")).ToString().Length <= 14)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= 14)
                     {
-                        nomeEntry.Text = string.Format(@"{0:00\.000\.000\/0000\-00}", Convert.ToInt64(bufferDigitado.Replace(".", "").Replace("/", "").Replace("-", "")));
+                        nomeEntry.Text = string.Format(@"{0:00\.000\.000\/0000\-00}", Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -133,11 +136,13 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace("/", "")).ToString().Length <= 8)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= 8)
                     {
-                        nomeEntry.Text = string.Format("{0:00/00/0000}", Convert.ToInt64(bufferDigitado.Replace("/", "")));
+                        nomeEntry.Text = string.Format("{0:00/00/0000}", Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -161,11 +166,13 @@ namespace MaskEdXamarin
         {
             try
             {
-                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado) && !bufferDigitado.Equals(","))
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
+                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace(",","").Replace(".","")).ToString().Length <= tamanho)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
                     {
-                        nomeEntry.Text = string.Format("{0:0}", Convert.ToInt64(bufferDigitado.Replace(",", "").Replace(".", "")));
+                        nomeEntry.Text = string.Format("{0:0}", Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -177,8 +184,8 @@ namespace MaskEdXamarin
                 else
                 {
 
-                    if (bufferDigitado.Equals(","))
-                        nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
+                    //if (bufferDigitado.Length>0)
+                    //    nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
 
                     ischanged = false;
                 }
@@ -193,12 +200,14 @@ namespace MaskEdXamarin
         {
             try
             {
-                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado) && !bufferDigitado.Equals(","))
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
+                if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace(".", "").Replace(",","")).ToString().Length <= tamanho)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
                     {
-                        string mascara = MontarMascaraInteiroComMilhar((bufferDigitado.Replace(".", "").Replace(",", "")));
-                        nomeEntry.Text = string.Format(mascara, Convert.ToInt64((bufferDigitado.Replace(".", "").Replace(",", ""))));
+                        string mascara = MontarMascaraInteiroComMilhar(bufferDigitado);
+                        nomeEntry.Text = string.Format(mascara, Convert.ToInt64((bufferDigitado)));
                     }
                     else
                     {
@@ -210,8 +219,8 @@ namespace MaskEdXamarin
                 else
                 {
 
-                    if (bufferDigitado.Equals(","))
-                        nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
+                    //if (bufferDigitado.Length>0)
+                    //    nomeEntry.Text = nomeEntry.Text.Substring(0, nomeEntry.Text.Length - 1);
 
                     ischanged = false;
                 }
@@ -226,26 +235,28 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    if (Convert.ToInt64(bufferDigitado.Replace(",", "")).ToString().Length <= tamanho)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
                     {
                         switch (numeroCasasDecimais)
                         {
                             case 1:
-                                nomeEntry.Text = string.Format(@"{0:0\,0}", Convert.ToInt64(bufferDigitado.Replace(",", "")));
+                                nomeEntry.Text = string.Format(@"{0:0\,0}", Convert.ToInt64(bufferDigitado));
                                 break;
 
                             case 2:
-                                nomeEntry.Text = string.Format(@"{0:0\,00}", Convert.ToInt64(bufferDigitado.Replace(",", "")));
+                                nomeEntry.Text = string.Format(@"{0:0\,00}", Convert.ToInt64(bufferDigitado));
                                 break;
 
                             case 3:
-                                nomeEntry.Text = string.Format(@"{0:0\,000}", Convert.ToInt64(bufferDigitado.Replace(",", "")));
+                                nomeEntry.Text = string.Format(@"{0:0\,000}", Convert.ToInt64(bufferDigitado));
                                 break;
 
                             default:
-                                nomeEntry.Text = string.Format(@"{0:0\,0000}", Convert.ToInt64(bufferDigitado.Replace(",", "")));
+                                nomeEntry.Text = string.Format(@"{0:0\,0000}", Convert.ToInt64(bufferDigitado));
                                 break;
                         }
                     }
@@ -270,13 +281,15 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
 
-                    if (Convert.ToInt64(bufferDigitado.Replace(".","").Replace(",","")).ToString().Length <= tamanho)
+                    if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
                     {
-                        string mascara = MontarMascaraDecComMilhar(bufferDigitado.Replace(".", "").Replace(",", ""));
-                        nomeEntry.Text = string.Format(mascara, Convert.ToInt64(bufferDigitado.Replace(".", "").Replace(",", "")));
+                        string mascara = MontarMascaraDecComMilhar(bufferDigitado);
+                        nomeEntry.Text = string.Format(mascara, Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -299,17 +312,13 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!ischanged && !string.IsNullOrEmpty(bufferDigitado))
                 {
-                    Task.Run(() =>
-                    {
-                        bufferDigitado = LimpaPattern(bufferDigitado);
-
-                    }).Wait();
-
                     if (Convert.ToInt64(bufferDigitado).ToString().Length <= 12)
                     {
-                        nomeEntry.Text = string.Format(@"{0:\(000\)00000\-0000}", Convert.ToInt64(bufferDigitado.Replace(",", "")));
+                        nomeEntry.Text = string.Format(@"{0:\(000\)00000\-0000}", Convert.ToInt64(bufferDigitado));
                     }
                     else
                     {
@@ -333,14 +342,10 @@ namespace MaskEdXamarin
         {
             try
             {
+                bufferDigitado = LimpaPattern(bufferDigitado);
+
                 if (!string.IsNullOrEmpty(bufferDigitado))
                 {
-                    Task.Run(() =>
-                    {
-                        bufferDigitado = LimpaPattern(bufferDigitado);
-
-                    }).Wait();
-
                     if (Convert.ToInt64(bufferDigitado).ToString().Length <= tamanho)
                     {
 
@@ -373,30 +378,12 @@ namespace MaskEdXamarin
 
         public async Task<string> ClipText(string mascara)
         {
-            return await LimpaPatternAsync(mascara);
+            return LimpaPattern(mascara);
         }
 
         private string LimpaPattern(string buffer)
         {
-            foreach (var item in Pattern)
-            {
-                buffer = buffer.Replace(item, "");
-            }
-
-            return buffer;
-        }
-
-        private async Task<string> LimpaPatternAsync(string buffer)
-        {
-            await Task.Run(() =>
-            {
-                foreach (var item in Pattern)
-                {
-                    buffer = buffer.Replace(item, "");
-                }
-            });
-
-            return buffer;
+            return Regex.Replace(buffer, @"[^0-9]+", "");
         }
 
         private string MontarMascaraDecComMilhar(string buffer)
