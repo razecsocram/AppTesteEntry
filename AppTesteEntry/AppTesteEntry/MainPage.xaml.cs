@@ -165,6 +165,8 @@ namespace AppTesteEntry
         {
             Ischanged = false;
             MaskEd = new MaskEdX((Entry)sender, TextAlignment.End);
+            ((Entry)sender).Text = "02468872000104";
+            DisplayAlert("ClipText", MaskEd.ClipText(((Entry)sender).Text), "Ok");
         }
 
         private void TxtCnpj_TextChanged(object sender, TextChangedEventArgs e)
@@ -183,6 +185,7 @@ namespace AppTesteEntry
         {
             Ischanged = false;
             MaskEd = new MaskEdX((Entry)sender, TextAlignment.Center);
+            ((Entry)sender).Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
         private void TxtData_TextChanged(object sender, TextChangedEventArgs e)
