@@ -10,11 +10,14 @@ namespace CLUteisX.MaskEd
 
         #region Propriedades
         readonly IDictionary<long, bool> ischanged;
+        readonly Entry GetEntry;
         #endregion
 
         #region Ctor
-        public MaskEdX()
+        public MaskEdX(Entry getEntry)
         {
+            GetEntry = getEntry;
+            GetEntry.Keyboard = Keyboard.Numeric;
             ischanged = new Dictionary<long, bool>();
         }
         #endregion

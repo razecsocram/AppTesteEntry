@@ -4,6 +4,7 @@ using CLUteisX.VCpf;
 using CLUteisX.VForm;
 using CLUteisX.VIE;
 using System.ComponentModel.DataAnnotations;
+using Xamarin.Forms;
 
 namespace AppTesteEntry.ViewModels
 {
@@ -64,7 +65,7 @@ namespace AppTesteEntry.ViewModels
 
         public MainPageViewModel()
         {
-            MaskEdX = new MaskEdX();
+            MaskEdX = new MaskEdX(new Entry());
             ValidaCnpj = new ValidaCnpj();
             ValidaCpf = new ValidaCpf();
             ValidaIESP = new ValidaIESP();
