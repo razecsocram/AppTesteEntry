@@ -4,7 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="AppTesteEntry.MainPage">
+             x:Class="AppTesteEntry.MainPage"
+             Visual="Material">
 
     <StackLayout 
            HorizontalOptions="Center"
@@ -12,10 +13,34 @@
         <!-- Place new controls here -->
         <Label Text="Teste de mascara de edição." FontSize="Large" FontAttributes="Bold" Margin="10"/>
         <Entry x:Name="TxtData" Placeholder="Digite Data" WidthRequest="200"/>
-        <Entry x:Name="TxtCnpj" Placeholder="Digite CNPJ" WidthRequest="200"/>
-        <Entry x:Name="TxtCpf" Placeholder="Digite CPF" WidthRequest="200"/>
+        <Entry x:Name="TxtCnpj"
+               Text="{Binding CNPJ}"
+               Placeholder="Digite CNPJ"
+               WidthRequest="200"/>
+        <Label x:Name="lblcnpjerror"
+               IsVisible="false"
+               Margin="5,-15,0,0"
+               TextColor="OrangeRed"/>
+        
+        <Entry x:Name="TxtCpf"
+               Text="{Binding CPF}"
+               Placeholder="Digite CPF"
+               WidthRequest="200"/>
+        <Label x:Name="lblcpferror"
+               IsVisible="false"
+               Margin="5,-15,0,0"
+               TextColor="OrangeRed"/>
+        
         <Entry x:Name="TxtTel" Placeholder="Digite Telefone" WidthRequest="200"/>
-        <Entry x:Name="TxtIE" Placeholder="Digite IE" WidthRequest="200"/>
+        <Entry x:Name="TxtIE"
+               Text="{Binding IE}"
+               Placeholder="Digite IE"
+               WidthRequest="200"/>
+        <Label x:Name="lblieerror"
+               IsVisible="false"
+               Margin="5,-15,0,0"
+               TextColor="OrangeRed"/>
+
         <Entry x:Name="TxtInteiroComMilhar" Placeholder="Inteiro com milhar" WidthRequest="200"/>
         <Entry x:Name="TxtDecSemMilar" Placeholder="Decimal sem milhar" WidthRequest="200"/>
         <Entry x:Name="TxtDecComMilar" Placeholder="Decimal com milhar" WidthRequest="200"/>

@@ -1,6 +1,9 @@
-﻿using MaskEdXamarin;
+﻿using AppTesteEntry.ViewModels;
+using CLUteisX.MaskEd;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace AppTesteEntry
@@ -10,6 +13,11 @@ namespace AppTesteEntry
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        #region Propriedades
+        MaskEdX MaskEdX;
+        readonly MainPageViewModel vm;
+        #endregion
+
         #region Ctor
         public MainPage()
         {
@@ -20,9 +28,11 @@ namespace AppTesteEntry
 
             this.TxtCnpj.Focused += TxtCnpj_Focused;
             this.TxtCnpj.TextChanged += TxtCnpj_TextChanged;
+            this.TxtCnpj.Completed += TxtCnpj_Completed;
 
             this.TxtCpf.Focused += TxtCpf_Focused;
             this.TxtCpf.TextChanged += TxtCpf_TextChanged;
+            this.TxtCpf.Completed += TxtCpf_Completed;
 
             this.TxtTel.Focused += TxtTel_Focused;
             this.TxtTel.TextChanged += TxtTel_TextChanged;
@@ -41,180 +51,235 @@ namespace AppTesteEntry
 
             this.TxtIE.TextChanged += TxtIE_TextChanged;
             this.TxtIE.Focused += TxtIE_Focused;
-
-            MaskEd = new MaskEdX(new Entry(), "", 0, 0, TextAlignment.End);
+            
+            MaskEdX = new MaskEdX();
+            
+            vm = new MainPageViewModel();
+            
+            BindingContext = vm;
         }
-        #endregion
 
-        #region Propriedades
-        private MaskEdX MaskEd;
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            vm.ErrorsChanged += Vm_ErrorsChanged;
 
-        private bool Ischanged;
+        }
+
+        private void Vm_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+        {
+            //if (Ischanged)
+            //{
+            var propErrors = (vm.GetErrors(e.PropertyName) as List<string>)?.Any() == true;
+
+            var messages = (vm.GetErrors(e.PropertyName) as List<string>);
+
+            string propTex = string.Join("\n", messages);
+
+            switch (e.PropertyName)
+            {
+                case nameof(vm.CNPJ):
+                    lblcnpjerror.IsVisible = propErrors;
+                    lblcnpjerror.Text = propTex;
+                    break;
+
+                case nameof(vm.CPF):
+                    lblcpferror.IsVisible = propErrors;
+                    lblcpferror.Text = propTex;
+                    break;
+
+                case nameof(vm.IE):
+                    lblieerror.IsVisible = propErrors;
+                    lblieerror.Text = propTex;
+                    break;
+
+                default:
+                    break;
+            }
+            //}
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            vm.ErrorsChanged -= Vm_ErrorsChanged;
+        }
         #endregion
 
         #region Metodos
         private void TxtInteiroComMilhar_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, 15, TextAlignment.End);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtInteiroComMilhar_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtInteiroComMilhar_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskInteiroComMilhar(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskInteiroComMilhar((Entry)sender, 15, TextAlignment.End, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtDecComMilar_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, 2, 15, TextAlignment.End);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtDecComMilar_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtDecComMilar_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskDecimalComMilhar(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskDecimalComMilhar((Entry)sender, 2, 15, TextAlignment.End, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtDecSemMilar_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, 2, 15, TextAlignment.End);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtDecSemMilar_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtDecSemMilar_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskDecimalSemMilhar(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskDecimalSemMilhar((Entry)sender, 2, 15, TextAlignment.End, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtFree_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, @"{0:0000000000}", 10, TextAlignment.Center);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtFree_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtFree_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskFree(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskFree((Entry)sender, @"{0:0000000000}", 10, TextAlignment.Center, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtTel_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, TextAlignment.Center);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtTel_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtTel_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskTel(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskTel((Entry)sender, TextAlignment.Center, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtCpf_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, TextAlignment.End);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
         }
 
-        private void TxtCpf_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtCpf_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskCPF(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskCPF((Entry)sender, TextAlignment.End, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
+        }
+
+        private void TxtCpf_Completed(object sender, EventArgs e)
+        {
+            this.TxtTel.Focus();
         }
 
         private void TxtCnpj_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, TextAlignment.End);
-            ((Entry)sender).Text = "02468872000104";
-            DisplayAlert("ClipText", MaskEd.ClipText(((Entry)sender).Text), "Ok");
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
+            //((Entry)sender).Text = "02468872000104";
+            //DisplayAlert("ClipText", MaskEdX.ClipText(((Entry)sender).Text), "Ok");
         }
 
-        private void TxtCnpj_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtCnpj_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskCNPJ(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskCNPJ((Entry)sender, TextAlignment.End, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
+        }
+
+        private void TxtCnpj_Completed(object sender, EventArgs e)
+        {
+            this.TxtCpf.Focus();
         }
 
         private void TxtData_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, TextAlignment.Center);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
             ((Entry)sender).Text = DateTime.Now.ToString("dd/MM/yyyy");
         }
 
-        private void TxtData_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtData_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskDate(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskDate((Entry)sender, TextAlignment.Center, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
 
         private void TxtIE_Focused(object sender, FocusEventArgs e)
         {
-            Ischanged = false;
-            MaskEd = new MaskEdX((Entry)sender, TextAlignment.Start);
+            MaskEdX = new MaskEdX();
+            ((Entry)sender).Keyboard = Keyboard.Numeric;
+            //((Entry)sender).Text = "110042490114";
         }
 
-        private void TxtIE_TextChanged(object sender, TextChangedEventArgs e)
+        private async void TxtIE_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                MaskEd.MaskIE(e.NewTextValue, ref Ischanged);
+                MaskEdX.MaskIE((Entry)sender, TextAlignment.Start, e.NewTextValue);
             }
             catch (Exception ex)
             {
-                DisplayAlert("Erro", ex.Message, "OK");
+                await DisplayAlert("Erro", ex.Message, "OK");
             }
         }
         #endregion
