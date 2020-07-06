@@ -11,13 +11,15 @@ namespace CLUteisX.MaskEd
         #region Propriedades
         readonly IDictionary<long, bool> ischanged;
         readonly Entry GetEntry;
+        readonly Keyboard Keyboard;
         #endregion
 
         #region Ctor
-        public MaskEdX(Entry getEntry)
+        public MaskEdX(Entry getEntry, Keyboard keyboard)
         {
             GetEntry = getEntry;
-            GetEntry.Keyboard = Keyboard.Numeric;
+            Keyboard = keyboard;
+            GetEntry.Keyboard = Keyboard;
             ischanged = new Dictionary<long, bool>();
         }
         #endregion
@@ -26,7 +28,6 @@ namespace CLUteisX.MaskEd
         public void MaskCPF(Entry nomeEntry, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -63,7 +64,6 @@ namespace CLUteisX.MaskEd
         public void MaskCNPJ(Entry nomeEntry, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -102,17 +102,17 @@ namespace CLUteisX.MaskEd
         public void MaskIE(Entry nomeEntry, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
-            long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
-
             try
             {
-                if (!string.IsNullOrEmpty(bufferDigitado))
-                {
-                    if (!bufferDigitado.ToUpper().Contains("ISENTO"))
-                    {
-                        bufferDigitado = LimpaPattern(bufferDigitado);
 
+                if (long.TryParse(string.IsNullOrEmpty(bufferDigitado)?"":bufferDigitado.Replace(".",""), out long resul))
+                {
+                    bufferDigitado = LimpaPattern(bufferDigitado);
+
+                    long buffer = long.Parse(LimpaPattern(bufferDigitado));
+
+                    if (!string.IsNullOrEmpty(bufferDigitado))
+                    {
                         if (!ischanged.ContainsKey(buffer))
                         {
                             ischanged.Clear();
@@ -144,7 +144,6 @@ namespace CLUteisX.MaskEd
         public void MaskDate(Entry nomeEntry, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -186,7 +185,6 @@ namespace CLUteisX.MaskEd
         public void MaskInteiroComMilhar(Entry nomeEntry, byte tamanho, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -229,7 +227,6 @@ namespace CLUteisX.MaskEd
                                         TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -286,7 +283,6 @@ namespace CLUteisX.MaskEd
                                         TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -327,7 +323,6 @@ namespace CLUteisX.MaskEd
         public void MaskTel(Entry nomeEntry, TextAlignment alignment, string bufferDigitado)
         {
             nomeEntry.HorizontalTextAlignment = alignment;
-            nomeEntry.Keyboard = Keyboard.Numeric;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try
@@ -368,7 +363,6 @@ namespace CLUteisX.MaskEd
                             string bufferDigitado)
         {
             nomeEntry.Keyboard = Keyboard.Numeric;
-            nomeEntry.HorizontalTextAlignment = alignment;
             long buffer = string.IsNullOrEmpty(bufferDigitado) ? 0 : long.Parse(LimpaPattern(bufferDigitado));
 
             try

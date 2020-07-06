@@ -56,22 +56,22 @@ namespace AppTesteEntry.ViewModels
             set
             {
                 SetProperty(ref iE, value);
-                if (!string.IsNullOrEmpty(IE))
+                if (!string.IsNullOrEmpty(IE) && !IE.ToUpper().StartsWith("I"))
                 {
-                    Validate(IE, () => ValidaIESP.IESPEValido(long.Parse(MaskEdX.ClipText(IE))), "IE invalido.");
+                   Validate(IE, () => ValidaIESP.IESPEValido(long.Parse(MaskEdX.ClipText(IE))), "IE invalido.");
                 }
             }
         }
 
         public MainPageViewModel()
         {
-            MaskEdX = new MaskEdX(new Entry());
+            MaskEdX = new MaskEdX(new Entry(), Keyboard.Default);
             ValidaCnpj = new ValidaCnpj();
             ValidaCpf = new ValidaCpf();
             ValidaIESP = new ValidaIESP();
             CNPJ = string.Empty;
             CPF = string.Empty;
-            iE = string.Empty;
+            IE = string.Empty;
         }
     }
 }

@@ -51,8 +51,8 @@ namespace AppTesteEntry
 
             this.TxtIE.TextChanged += TxtIE_TextChanged;
             this.TxtIE.Focused += TxtIE_Focused;
-            
-            MaskEdX = new MaskEdX(new Entry());
+
+            MaskEdX = new MaskEdX(new Entry(), Keyboard.Default);
             
             vm = new MainPageViewModel();
             
@@ -109,7 +109,7 @@ namespace AppTesteEntry
         #region Metodos
         private void TxtInteiroComMilhar_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtInteiroComMilhar_TextChanged(object sender, TextChangedEventArgs e)
@@ -126,7 +126,7 @@ namespace AppTesteEntry
 
         private void TxtDecComMilar_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtDecComMilar_TextChanged(object sender, TextChangedEventArgs e)
@@ -143,7 +143,7 @@ namespace AppTesteEntry
 
         private void TxtDecSemMilar_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtDecSemMilar_TextChanged(object sender, TextChangedEventArgs e)
@@ -160,7 +160,7 @@ namespace AppTesteEntry
 
         private void TxtFree_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtFree_TextChanged(object sender, TextChangedEventArgs e)
@@ -177,7 +177,7 @@ namespace AppTesteEntry
 
         private void TxtTel_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtTel_TextChanged(object sender, TextChangedEventArgs e)
@@ -194,7 +194,7 @@ namespace AppTesteEntry
 
         private void TxtCpf_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtCpf_TextChanged(object sender, TextChangedEventArgs e)
@@ -216,7 +216,7 @@ namespace AppTesteEntry
 
         private void TxtCnpj_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
             //((Entry)sender).Text = "02468872000104";
             //DisplayAlert("ClipText", MaskEdX.ClipText(((Entry)sender).Text), "Ok");
         }
@@ -240,7 +240,7 @@ namespace AppTesteEntry
 
         private void TxtData_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Numeric);
         }
 
         private async void TxtData_TextChanged(object sender, TextChangedEventArgs e)
@@ -257,7 +257,8 @@ namespace AppTesteEntry
 
         private void TxtIE_Focused(object sender, FocusEventArgs e)
         {
-            MaskEdX = new MaskEdX((Entry)sender);
+            //((Entry)sender).Text = "isento";
+            MaskEdX = new MaskEdX((Entry)sender, Keyboard.Default);
             //((Entry)sender).Text = "110042490114";
         }
 
